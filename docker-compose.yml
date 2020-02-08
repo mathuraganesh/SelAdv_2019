@@ -1,0 +1,33 @@
+version: '3'
+services:
+  firefox:
+    image: selenium/node-firefox-debug
+    container_name: ffox_node
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+
+  chrome:
+    image: selenium/node-chrome-debug
+    container_name: chrome_node
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+
+  hub:
+    image: selenium/hub
+    container_name: grid_hub
+    ports:
+      - "4444:4444"
+      
+  scripts:
+    image: leafbot:1.2
+    container_name: test_scripts
+    links:
+      - hub
